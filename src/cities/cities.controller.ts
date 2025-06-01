@@ -1,7 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+// Dependencies
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+
+// Services
 import { CitiesService } from './cities.service';
+
+// DTOs
 import { CreateCityDto } from './dto/create-city.dto';
 import { UpdateCityDto } from './dto/update-city.dto';
+
+// Interfaces
+import { ResponseInterface } from '../shared/interfaces/response.interfaces';
+import { ResponseCity } from './interfaces/cities.interfaces';
 
 @Controller('cities')
 export class CitiesController {
@@ -13,22 +30,25 @@ export class CitiesController {
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<ResponseInterface<ResponseCity[]>> {
     return this.citiesService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<ResponseInterface<ResponseCity>> {
     return this.citiesService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCityDto: UpdateCityDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateCityDto: UpdateCityDto,
+  ): Promise<ResponseInterface<null>> {
     return this.citiesService.update(+id, updateCityDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string): Promise<ResponseInterface<null>> {
     return this.citiesService.remove(+id);
   }
 }

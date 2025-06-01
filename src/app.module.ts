@@ -9,6 +9,8 @@ import { AppService } from './app.service';
 
 // Providers
 import { databaseProviders } from './config/database.providers';
+
+// Modules
 import { CitiesModule } from './cities/cities.module';
 import { NeighborhoodsModule } from './neighborhoods/neighborhoods.module';
 import { CategoriesModule } from './categories/categories.module';
@@ -27,7 +29,24 @@ import { MajorsModule } from './majors/majors.module';
 import { InstructorModule } from './instructor/instructor.module';
 
 @Module({
-  imports: [CitiesModule, NeighborhoodsModule, CategoriesModule, EntrepreneursModule, GendersModule, RolesModule, UsersModule, ProjectsModule, CoursesModule, EntrepreneurCoursesModule, StatusCoursesModule, StatusProjectModule, InternsModule, ProjectInternsModule, MajorsModule, InstructorModule],
+  imports: [
+    CitiesModule,
+    NeighborhoodsModule,
+    CategoriesModule,
+    EntrepreneursModule,
+    GendersModule,
+    RolesModule,
+    UsersModule,
+    ProjectsModule,
+    CoursesModule,
+    EntrepreneurCoursesModule,
+    StatusCoursesModule,
+    StatusProjectModule,
+    InternsModule,
+    ProjectInternsModule,
+    MajorsModule,
+    InstructorModule,
+  ],
   controllers: [AppController],
   providers: [AppService, ...databaseProviders],
 })
