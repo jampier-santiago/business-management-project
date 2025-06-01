@@ -79,9 +79,7 @@ export class CitiesService {
    * @throws {NotFoundException} When the city with the specified id is not found
    */
   async findOne(id: number): Promise<ResponseInterface<ResponseCity>> {
-    const city = await this.cityRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const city = await this.existCity(id);
 
     if (!city) {
       throw new NotFoundException('City not found');
@@ -113,9 +111,7 @@ export class CitiesService {
     id: number,
     updateCityDto: UpdateCityDto,
   ): Promise<ResponseInterface<null>> {
-    const city = await this.cityRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const city = await this.existCity(id);
 
     if (!city) {
       throw new NotFoundException('City not found');
@@ -158,9 +154,7 @@ export class CitiesService {
    * @throws {NotFoundException} When the city with the specified id is not found
    */
   async remove(id: number): Promise<ResponseInterface<null>> {
-    const city = await this.cityRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const city = await this.existCity(id);
 
     if (!city) {
       throw new NotFoundException('City not found');
@@ -173,5 +167,20 @@ export class CitiesService {
       statusCode: 200,
       message: 'City deleted successfully',
     };
+  }
+
+  /**
+   * Verifica si existe una ciudad con el ID especificado
+   * @param {number} id - El identificador único de la ciudad a verificar
+   * @returns {Promise<boolean>} Una promesa que se resuelve a:
+   * - true: si la ciudad existe y no está eliminada lógicamente
+   * - false: si la ciudad no existe o está eliminada lógicamente
+   */
+  public async existCity(id: number): Promise<City | null> {
+    const city = await this.cityRepository.findOne({
+      where: { id, deletedAt: IsNull() },
+    });
+
+    return city;
   }
 }
