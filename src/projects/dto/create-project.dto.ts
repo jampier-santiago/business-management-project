@@ -17,9 +17,9 @@ export class CreateProjectDto {
   @IsNotEmpty()
   description: string;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  budget: string;
+  budget: number;
 
   @IsDateString()
   @IsNotEmpty()
@@ -44,8 +44,4 @@ export class CreateProjectDto {
   @IsNumber()
   @IsNotEmpty()
   statusProjectId: number;
-
-  @IsNumber()
-  @IsNotEmpty()
-  userId: number;
 }

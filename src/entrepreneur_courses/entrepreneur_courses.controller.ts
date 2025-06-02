@@ -14,6 +14,7 @@ import { EntrepreneurCoursesService } from './entrepreneur_courses.service';
 
 // DTOs
 import { CreateEntrepreneurCourseDto } from './dto/create-entrepreneur_course.dto';
+import { ChangeStatusDto } from './dto/change-status.dto';
 
 // Interfaces
 import { ResponseEntrepreneurCourse } from './interfaces/entrepreneurCourses.interfaces';
@@ -44,6 +45,14 @@ export class EntrepreneurCoursesController {
   @Patch(':id/complete')
   completeCourse(@Param('id') id: string): Promise<ResponseInterface<null>> {
     return this.entrepreneurCoursesService.completeCourse(+id);
+  }
+
+  @Patch(':id/change-status')
+  changeStatus(
+    @Param('id') id: string,
+    @Body() changeStatusDto: ChangeStatusDto,
+  ): Promise<ResponseInterface<null>> {
+    return this.entrepreneurCoursesService.changeStatus(+id, changeStatusDto);
   }
 
   @Delete(':id')

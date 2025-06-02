@@ -3,6 +3,7 @@ import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common';
 
 // DTOs
 import { CreateEntrepreneurCourseDto } from './dto/create-entrepreneur_course.dto';
+import { ChangeStatusDto } from './dto/change-status.dto';
 
 // Config
 import { dataSource } from '../config/database.providers';
@@ -159,6 +160,35 @@ export class EntrepreneurCoursesService {
       success: true,
       statusCode: HttpStatus.OK,
       message: 'Entrepreneur course deleted successfully',
+    };
+  }
+
+  public async changeStatus(
+    id: number,
+    changeStatusDto: ChangeStatusDto,
+  ): Promise<ResponseInterface<null>> {
+    const entrepreneurCourse = await this.validateEntrepreneurCourse(id);
+
+    if (!entrepreneurCourse) {
+      throw new BadRequestException('Entrepreneur course not found');
+    }
+
+    const status = await this.statusCoursesService.validateStatusCourse(
+      changeStatusDto.statusId,
+    );
+
+    if (!status) {
+      throw new BadRequestException('Status not found');
+    }
+
+    await this.entrepreneurCourseRepository.update(id, {
+      statusCourse: { id: changeStatusDto.statusId },
+    });
+
+    return {
+      success: true,
+      statusCode: HttpStatus.OK,
+      message: 'Entrepreneur course status updated successfully',
     };
   }
 

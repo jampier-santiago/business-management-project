@@ -75,9 +75,7 @@ export class StatusProjectService {
    * @throws NotFoundException if the status project is not found
    */
   async findOne(id: number): Promise<ResponseInterface<ResponseStatusProject>> {
-    const statusProject = await this.statusProjectRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const statusProject = await this.validateStatusProject(id);
 
     if (!statusProject) {
       throw new NotFoundException('Status project not found');
@@ -106,9 +104,7 @@ export class StatusProjectService {
     id: number,
     updateStatusProjectDto: UpdateStatusProjectDto,
   ): Promise<ResponseInterface<null>> {
-    const statusProject = await this.statusProjectRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const statusProject = await this.validateStatusProject(id);
 
     if (!statusProject) {
       throw new NotFoundException('Status project not found');
@@ -146,9 +142,7 @@ export class StatusProjectService {
    * @throws NotFoundException if the status project is not found
    */
   async remove(id: number): Promise<ResponseInterface<null>> {
-    const statusProject = await this.statusProjectRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const statusProject = await this.validateStatusProject(id);
 
     if (!statusProject) {
       throw new NotFoundException('Status project not found');
@@ -161,5 +155,15 @@ export class StatusProjectService {
       statusCode: 200,
       message: 'Status project deleted successfully',
     };
+  }
+
+  public async validateStatusProject(
+    id: number,
+  ): Promise<StatusProject | null> {
+    const statusProject = await this.statusProjectRepository.findOne({
+      where: { id, deletedAt: IsNull() },
+    });
+
+    return statusProject;
   }
 }

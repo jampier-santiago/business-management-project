@@ -9,9 +9,10 @@ import { ProjectsController } from './projects.controller';
 
 // Modules
 import { EntrepreneursModule } from '../entrepreneurs/entrepreneurs.module';
+import { StatusProjectModule } from 'src/status_project/status_project.module';
 
 @Module({
-  imports: [EntrepreneursModule],
+  imports: [EntrepreneursModule, StatusProjectModule],
   controllers: [ProjectsController],
   providers: [ProjectsService],
 })
