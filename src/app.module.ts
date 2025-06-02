@@ -1,5 +1,6 @@
 // Dependencies
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 
 // Modules
 import { AppController } from './app.controller';
@@ -30,6 +31,9 @@ import { InstructorModule } from './instructor/instructor.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     CitiesModule,
     NeighborhoodsModule,
     CategoriesModule,

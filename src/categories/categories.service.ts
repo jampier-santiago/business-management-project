@@ -85,9 +85,7 @@ export class CategoriesService {
    * @throws NotFoundException if the category is not found
    */
   async findOne(id: number): Promise<ResponseInterface<ResponseCategory>> {
-    const category = await this.categoryRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const category = await this.validateCategory(id);
 
     if (!category) {
       throw new NotFoundException('Category not found');
@@ -114,9 +112,7 @@ export class CategoriesService {
    * @throws BadRequestException if the name or description is empty or if the name already exists
    */
   async update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    const category = await this.categoryRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const category = await this.validateCategory(id);
 
     if (!category) {
       throw new NotFoundException('Category not found');
@@ -161,9 +157,7 @@ export class CategoriesService {
    * @throws NotFoundException if the category is not found
    */
   async remove(id: number): Promise<ResponseInterface<null>> {
-    const category = await this.categoryRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const category = await this.validateCategory(id);
 
     if (!category) {
       throw new NotFoundException('Category not found');
@@ -176,5 +170,13 @@ export class CategoriesService {
       statusCode: 200,
       message: 'Category deleted successfully',
     };
+  }
+
+  public async validateCategory(id: number): Promise<Category | null> {
+    const category = await this.categoryRepository.findOne({
+      where: { id, deletedAt: IsNull() },
+    });
+
+    return category;
   }
 }

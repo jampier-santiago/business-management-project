@@ -1,34 +1,53 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+// Dependencies
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+
+// Services
 import { EntrepreneurCoursesService } from './entrepreneur_courses.service';
+
+// DTOs
 import { CreateEntrepreneurCourseDto } from './dto/create-entrepreneur_course.dto';
-import { UpdateEntrepreneurCourseDto } from './dto/update-entrepreneur_course.dto';
+
+// Interfaces
+import { ResponseEntrepreneurCourse } from './interfaces/entrepreneurCourses.interfaces';
+import { ResponseInterface } from '../shared/interfaces/response.interfaces';
 
 @Controller('entrepreneur-courses')
 export class EntrepreneurCoursesController {
-  constructor(private readonly entrepreneurCoursesService: EntrepreneurCoursesService) {}
+  constructor(
+    private readonly entrepreneurCoursesService: EntrepreneurCoursesService,
+  ) {}
 
   @Post()
-  create(@Body() createEntrepreneurCourseDto: CreateEntrepreneurCourseDto) {
+  create(
+    @Body() createEntrepreneurCourseDto: CreateEntrepreneurCourseDto,
+  ): Promise<ResponseInterface<ResponseEntrepreneurCourse>> {
     return this.entrepreneurCoursesService.create(createEntrepreneurCourseDto);
   }
 
-  @Get()
-  findAll() {
-    return this.entrepreneurCoursesService.findAll();
+  @Get('entrepreneur/:entrepreneurId')
+  findAllByEntrepreneurId(
+    @Param('entrepreneurId') entrepreneurId: string,
+  ): Promise<ResponseInterface<ResponseEntrepreneurCourse[]>> {
+    return this.entrepreneurCoursesService.findAllByEntrepreneurId(
+      +entrepreneurId,
+    );
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.entrepreneurCoursesService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEntrepreneurCourseDto: UpdateEntrepreneurCourseDto) {
-    return this.entrepreneurCoursesService.update(+id, updateEntrepreneurCourseDto);
+  @Patch(':id/complete')
+  completeCourse(@Param('id') id: string): Promise<ResponseInterface<null>> {
+    return this.entrepreneurCoursesService.completeCourse(+id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string): Promise<ResponseInterface<null>> {
     return this.entrepreneurCoursesService.remove(+id);
   }
 }

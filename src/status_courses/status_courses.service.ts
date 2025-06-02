@@ -146,4 +146,12 @@ export class StatusCoursesService {
       message: 'Status course deleted successfully',
     };
   }
+
+  public async validateStatusCourse(id: number): Promise<StatusCourse | null> {
+    const statusCourse = await this.statusCourseRepository.findOne({
+      where: { id, deletedAt: IsNull() },
+    });
+
+    return statusCourse;
+  }
 }

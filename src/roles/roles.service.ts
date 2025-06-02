@@ -95,9 +95,7 @@ export class RolesService {
    * @throws {NotFoundException} If no role is found with the provided ID
    */
   async findOne(id: number): Promise<ResponseInterface<ResponseRole>> {
-    const role = await this.roleRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const role = await this.existRole(id);
 
     if (!role) {
       throw new NotFoundException('Role not found');
@@ -134,9 +132,7 @@ export class RolesService {
     id: number,
     updateRoleDto: UpdateRoleDto,
   ): Promise<ResponseInterface<null>> {
-    const role = await this.roleRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const role = await this.existRole(id);
 
     if (!role) {
       throw new NotFoundException('Role not found');
@@ -179,9 +175,7 @@ export class RolesService {
    * @throws {NotFoundException} If no role is found with the provided ID
    */
   async remove(id: number): Promise<ResponseInterface<null>> {
-    const role = await this.roleRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const role = await this.existRole(id);
 
     if (!role) {
       throw new NotFoundException('Role not found');
@@ -194,5 +188,21 @@ export class RolesService {
       statusCode: 200,
       message: 'Role deleted successfully',
     };
+  }
+
+  /**
+   * Checks if a role exists in the database by its ID.
+   *
+   * @param {number} id - The ID of the role to check
+   * @returns {Promise<Roles | null>} A promise that resolves to:
+   * - The role object if found
+   * - null if no role is found with the provided ID
+   */
+  async existRole(id: number): Promise<Roles | null> {
+    const role = await this.roleRepository.findOne({
+      where: { id, deletedAt: IsNull() },
+    });
+
+    return role;
   }
 }

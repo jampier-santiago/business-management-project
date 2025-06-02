@@ -147,9 +147,7 @@ export class NeighborhoodsService {
     id: number,
     updateNeighborhoodDto: UpdateNeighborhoodDto,
   ): Promise<ResponseInterface<null>> {
-    const neighborhood = await this.neighborhoodRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const neighborhood = await this.validateNeighborhood(id);
 
     if (!neighborhood) {
       throw new NotFoundException('Neighborhood not found');
@@ -181,9 +179,7 @@ export class NeighborhoodsService {
    * @throws NotFoundException if neighborhood is not found
    */
   async remove(id: number): Promise<ResponseInterface<null>> {
-    const neighborhood = await this.neighborhoodRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const neighborhood = await this.validateNeighborhood(id);
 
     if (!neighborhood) {
       throw new NotFoundException('Neighborhood not found');
@@ -226,5 +222,13 @@ export class NeighborhoodsService {
         },
       })),
     };
+  }
+
+  public async validateNeighborhood(id: number): Promise<Neighborhood | null> {
+    const neighborhood = await this.neighborhoodRepository.findOne({
+      where: { id, deletedAt: IsNull() },
+    });
+
+    return neighborhood;
   }
 }

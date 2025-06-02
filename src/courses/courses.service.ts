@@ -88,9 +88,7 @@ export class CoursesService {
    * @throws NotFoundException if the course is not found
    */
   async findOne(id: number): Promise<ResponseInterface<ResponseCourse>> {
-    const course = await this.courseRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const course = await this.validateCourse(id);
 
     if (!course) {
       throw new NotFoundException('Course not found');
@@ -121,9 +119,7 @@ export class CoursesService {
     id: number,
     updateCourseDto: UpdateCourseDto,
   ): Promise<ResponseInterface<null>> {
-    const course = await this.courseRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const course = await this.validateCourse(id);
 
     if (!course) {
       throw new NotFoundException('Course not found');
@@ -161,9 +157,7 @@ export class CoursesService {
    * @throws NotFoundException if the course is not found
    */
   async remove(id: number): Promise<ResponseInterface<null>> {
-    const course = await this.courseRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const course = await this.validateCourse(id);
 
     if (!course) {
       throw new NotFoundException('Course not found');
@@ -207,9 +201,7 @@ export class CoursesService {
    * @throws NotFoundException if the course is not found
    */
   async inactiveCourses(id: number): Promise<ResponseInterface<null>> {
-    const course = await this.courseRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const course = await this.validateCourse(id);
 
     if (!course) {
       throw new NotFoundException('Course not found');
@@ -231,9 +223,7 @@ export class CoursesService {
    * @throws NotFoundException if the course is not found
    */
   async activeCourses(id: number): Promise<ResponseInterface<null>> {
-    const course = await this.courseRepository.findOne({
-      where: { id, deletedAt: IsNull() },
-    });
+    const course = await this.validateCourse(id);
 
     if (!course) {
       throw new NotFoundException('Course not found');
@@ -246,5 +236,13 @@ export class CoursesService {
       statusCode: 200,
       message: 'Course active successfully',
     };
+  }
+
+  public async validateCourse(id: number): Promise<Course | null> {
+    const course = await this.courseRepository.findOne({
+      where: { id, deletedAt: IsNull() },
+    });
+
+    return course;
   }
 }
