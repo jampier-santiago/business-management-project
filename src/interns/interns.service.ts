@@ -289,4 +289,16 @@ export class InternsService {
       statusCode: HttpStatus.OK,
     };
   }
+
+  public async validateIntern(id: number): Promise<Intern | null> {
+    const intern = await this.interRepository.findOne({
+      where: { id, deletedAt: IsNull() },
+      relations: {
+        user: true,
+        major: true,
+      },
+    });
+
+    return intern;
+  }
 }

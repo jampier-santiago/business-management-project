@@ -15,5 +15,6 @@ import { StatusProjectModule } from 'src/status_project/status_project.module';
   imports: [EntrepreneursModule, StatusProjectModule],
   controllers: [ProjectsController],
   providers: [ProjectsService],
+  exports: [ProjectsService],
 })
 export class ProjectsModule {}
