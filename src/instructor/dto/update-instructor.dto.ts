@@ -1,4 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateInstructorDto } from './create-instructor.dto';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
-export class UpdateInstructorDto extends PartialType(CreateInstructorDto) {}
+export class UpdateInstructorDto {
+  @IsNumber()
+  @IsNotEmpty()
+  majorId: number;
+}

@@ -1,7 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+// Dependencies
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+
+// Services
 import { InstructorService } from './instructor.service';
+
+// DTO's
 import { CreateInstructorDto } from './dto/create-instructor.dto';
 import { UpdateInstructorDto } from './dto/update-instructor.dto';
+
+// Interfaces
+import { ResponseInterface } from 'src/shared/interfaces/response.interfaces';
+import { ResponseInstructor } from './interfaces/instructors.interfaces';
 
 @Controller('instructor')
 export class InstructorController {
@@ -13,7 +30,7 @@ export class InstructorController {
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<ResponseInterface<ResponseInstructor[]>> {
     return this.instructorService.findAll();
   }
 
@@ -23,7 +40,10 @@ export class InstructorController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateInstructorDto: UpdateInstructorDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateInstructorDto: UpdateInstructorDto,
+  ) {
     return this.instructorService.update(+id, updateInstructorDto);
   }
 
