@@ -150,7 +150,7 @@ export class MajorsService {
       throw new NotFoundException('Major not found');
     }
 
-    await this.majorRepository.update(id, { deletedAt: new Date() });
+    await this.majorRepository.softDelete(id);
 
     return {
       success: true,

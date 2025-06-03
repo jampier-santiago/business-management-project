@@ -181,7 +181,7 @@ export class RolesService {
       throw new NotFoundException('Role not found');
     }
 
-    await this.roleRepository.update(id, { deletedAt: new Date() });
+    await this.roleRepository.softDelete(id);
 
     return {
       success: true,

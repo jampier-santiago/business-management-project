@@ -115,7 +115,7 @@ export class UsersService {
 
     const password = await hash(createUserDto.password, 10);
 
-    await this.userRepository.save({
+    const userCreated = await this.userRepository.save({
       ...createUserDto,
       password,
       role: { id: role.id },
@@ -126,6 +126,18 @@ export class UsersService {
       success: true,
       statusCode: HttpStatus.CREATED,
       message: 'User created successfully',
+      data: {
+        id: userCreated.id,
+        name: userCreated.name,
+        lastName: userCreated.lastName,
+        phoneNumber: userCreated.phoneNumber,
+        email: userCreated.email,
+        typeDocument: userCreated.typeDocument,
+        documentNumber: userCreated.documentNumber,
+        birthDate: userCreated.birthDate,
+        gender: userCreated.gender,
+        role: userCreated.role,
+      },
     };
   }
 

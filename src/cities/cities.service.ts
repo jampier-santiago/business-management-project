@@ -160,7 +160,7 @@ export class CitiesService {
       throw new NotFoundException('City not found');
     }
 
-    await this.cityRepository.update(id, { deletedAt: new Date() });
+    await this.cityRepository.softDelete(id);
 
     return {
       success: true,

@@ -152,9 +152,7 @@ export class EntrepreneurCoursesService {
       throw new BadRequestException('Entrepreneur course not found');
     }
 
-    await this.entrepreneurCourseRepository.update(id, {
-      deletedAt: new Date(),
-    });
+    await this.entrepreneurCourseRepository.softDelete(id);
 
     return {
       success: true,

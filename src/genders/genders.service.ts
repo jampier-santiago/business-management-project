@@ -139,7 +139,7 @@ export class GendersService {
       throw new NotFoundException('Gender not found');
     }
 
-    await this.genderRepository.update(id, { deletedAt: new Date() });
+    await this.genderRepository.softDelete(id);
 
     return {
       success: true,

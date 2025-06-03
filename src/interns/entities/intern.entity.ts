@@ -31,7 +31,7 @@ export class Intern {
   @Column({ name: 'start_date', type: 'date' })
   startDate: Date;
 
-  @Column({ name: 'end_date', type: 'date', nullable: false })
+  @Column({ name: 'end_date', type: 'date', nullable: true })
   endDate: Date;
 
   @OneToOne(() => User, (user) => user.id)

@@ -163,7 +163,7 @@ export class CoursesService {
       throw new NotFoundException('Course not found');
     }
 
-    await this.courseRepository.update(id, { deletedAt: new Date() });
+    await this.courseRepository.softDelete(id);
 
     return {
       success: true,

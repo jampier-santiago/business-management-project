@@ -148,7 +148,7 @@ export class StatusProjectService {
       throw new NotFoundException('Status project not found');
     }
 
-    await this.statusProjectRepository.update(id, { deletedAt: new Date() });
+    await this.statusProjectRepository.softDelete(id);
 
     return {
       success: true,

@@ -249,7 +249,7 @@ export class ProjectsService {
       throw new BadRequestException('Project not found');
     }
 
-    await this.projectRepository.update(id, { endDate: new Date() });
+    await this.projectRepository.softDelete(id);
 
     return {
       success: true,

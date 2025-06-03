@@ -163,7 +163,7 @@ export class CategoriesService {
       throw new NotFoundException('Category not found');
     }
 
-    await this.categoryRepository.update(id, { deletedAt: new Date() });
+    await this.categoryRepository.softDelete(id);
 
     return {
       success: true,

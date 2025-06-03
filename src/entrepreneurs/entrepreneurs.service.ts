@@ -273,7 +273,7 @@ export class EntrepreneursService {
       throw new BadRequestException('Entrepreneur not found');
     }
 
-    await this.entrepreneurRepository.update(id, { deletedAt: new Date() });
+    await this.entrepreneurRepository.softDelete(id);
 
     return {
       success: true,

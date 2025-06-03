@@ -185,7 +185,7 @@ export class NeighborhoodsService {
       throw new NotFoundException('Neighborhood not found');
     }
 
-    await this.neighborhoodRepository.update(id, { deletedAt: new Date() });
+    await this.neighborhoodRepository.softDelete(id);
 
     return {
       success: true,
