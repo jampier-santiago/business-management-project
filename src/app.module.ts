@@ -1,6 +1,7 @@
 // Dependencies
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 
 // Modules
 import { AppController } from './app.controller';
@@ -28,12 +29,15 @@ import { InternsModule } from './interns/interns.module';
 import { ProjectInternsModule } from './project_interns/project_interns.module';
 import { MajorsModule } from './majors/majors.module';
 import { InstructorModule } from './instructor/instructor.module';
+import { TaskService } from './jobs/task/task.service';
+import { TaskModule } from './jobs/task/task.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    ScheduleModule.forRoot(),
     CitiesModule,
     NeighborhoodsModule,
     CategoriesModule,
@@ -50,8 +54,9 @@ import { InstructorModule } from './instructor/instructor.module';
     ProjectInternsModule,
     MajorsModule,
     InstructorModule,
+    TaskModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ...databaseProviders],
+  providers: [AppService, ...databaseProviders, TaskService],
 })
 export class AppModule {}

@@ -290,6 +290,30 @@ export class InternsService {
     };
   }
 
+  async activeIntern(id: number): Promise<ResponseInterface<null>> {
+    const intern = await this.interRepository.findOne({
+      where: { id, deletedAt: IsNull() },
+      relations: {
+        user: true,
+        major: true,
+      },
+    });
+
+    if (!intern) {
+      throw new NotFoundException('Intern not found');
+    }
+
+    await this.interRepository.update(id, {
+      isActive: true,
+    });
+
+    return {
+      success: true,
+      message: 'Intern active successfully',
+      statusCode: HttpStatus.OK,
+    };
+  }
+
   public async validateIntern(id: number): Promise<Intern | null> {
     const intern = await this.interRepository.findOne({
       where: { id, deletedAt: IsNull() },
